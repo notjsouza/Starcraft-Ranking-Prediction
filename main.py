@@ -10,7 +10,7 @@ from tensorflow import keras
 # load csv file into a pandas dataframe
 data = pd.read_csv('starcraft_player_data.csv')
 
-# removes all players containing unknown values, '?', from the dataframe
+# removes all players containing unknown data values, '?', from the dataframe
 data = data.where(data != '?').dropna()
 data.head()
 
@@ -19,9 +19,7 @@ data['LeagueIndex'] = encoder.fit_transform(data['LeagueIndex'])
 
 # convert pandas dataframe to numpy vector
 np_stats = data.to_numpy().astype(float)
-#
-#
-#
+
 # extract feature variable x
 x_data = np_stats[:, 1:19]
 
