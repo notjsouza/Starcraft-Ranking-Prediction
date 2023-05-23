@@ -26,10 +26,10 @@ x_data = np_stats[:, 1:19]
 # extract target variable y
 y_data = np_stats[:, 1]
 
-#  --------------------- FIX Y_DATA PROCESSING ISSUE!!!!! ----------------------------------------
+#  ------------------------------- FIX Y_DATA CONVERSION ISSUE!!!!! ------------------------------
 
-# convert to one-hot-encoding
-y_data = tf.keras.utils.to_categorical(y_data, 1)
+# convert to ???
+# y_data = tf.keras.utils.to_ordinal(y_data, 0)
 print(y_data)
 
 # split training and testing data
@@ -57,7 +57,7 @@ model.add(keras.layers.Dense(OUTPUT_CLASSES, name='Dense-Layer-Final', activatio
 # compiling the model
 model.compile(loss='categorical_crossentropy', metrics=['accuracy'])
 
-# -------------------------- RESTORE WHEN DATA PROCESSING ISSUE IS FIXED -------------------------
+# ------------------------- RESTORE WHEN DATA PROCESSING ISSUE IS FIXED --------------------------
 
 # model.summary()
 
