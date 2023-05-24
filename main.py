@@ -13,10 +13,7 @@ df.head()
 
 # splits the dataframe into feature variable x_df and target variable y_df
 x_df = df.drop(columns=['GameID', 'LeagueIndex'])
-x_df = x_df.to_numpy().astype(float)
-
 y_df = df['LeagueIndex']
-y_df = y_df.to_numpy().astype(float)
 
 # 90/10 split training data and test data
 x_train, x_test, y_train, y_test = train_test_split(x_df, y_df, test_size=0.1, random_state=1)
