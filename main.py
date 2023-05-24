@@ -1,70 +1,30 @@
 import pandas as pd
-import tensorflow as tf
-# import numpy as np
 
-from sklearn import preprocessing
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
-
-from tensorflow import keras
+from sklearn.metrics import accuracy_score
 
 # load csv file into a pandas dataframe
-data = pd.read_csv('starcraft_player_data.csv')
+df = pd.read_csv('starcraft_player_data.csv')
 
 # removes all players containing unknown data values, '?', from the dataframe
-data = data.where(data != '?').dropna()
-data.head()
+df = df.where(df != '?').dropna()
+df.head()
 
-encoder = preprocessing.LabelEncoder()
-data['LeagueIndex'] = encoder.fit_transform(data['LeagueIndex'])
+# splits the dataframe into feature variable x_df and target variable y_df
+x_df = df.drop(columns=['GameID', 'LeagueIndex'])
+x_df = x_df.to_numpy().astype(float)
 
-# convert pandas dataframe to numpy vector
-np_stats = data.to_numpy().astype(float)
+y_df = df['LeagueIndex']
+y_df = y_df.to_numpy().astype(float)
 
-# extract feature variable x
-x_data = np_stats[:, 1:19]
+# 90/10 split training data and test data
+x_train, x_test, y_train, y_test = train_test_split(x_df, y_df, test_size=0.1, random_state=1)
 
-# extract target variable y
-y_data = np_stats[:, 1]
+# creates a model to predict the rank of the player
+model = DecisionTreeClassifier(max_depth=8, random_state=4)
+model.fit(x_train, y_train)
+predictions = model.predict(x_test)
 
-#  ------------------------------- FIX Y_DATA CONVERSION ISSUE!!!!! ------------------------------
-
-# convert to ???
-# y_data = tf.keras.utils.to_ordinal(y_data, 0)
-print(y_data)
-
-# split training and testing data
-x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.1)
-
-# ------------------------------------------------------------------------------------------------
-
-# training parameters
-EPOCHS = 20
-BATCH_SIZE = 64
-VERBOSE = 1
-OUTPUT_CLASSES = len(encoder.classes_)
-N_HIDDEN = 128
-VALIDATION_SPLIT = 0.2
-
-# creating a sequential model
-model = tf.keras.models.Sequential()
-
-# creating dense layers
-model.add(keras.layers.Dense(N_HIDDEN, input_shape=(18,), name='Dense-Layer-1', activation='relu'))
-model.add(keras.layers.Dense(N_HIDDEN, name='Dense-Layer-2', activation='relu'))
-model.add(keras.layers.Dense(N_HIDDEN, name='Dense-Layer-3', activation='relu'))
-model.add(keras.layers.Dense(OUTPUT_CLASSES, name='Dense-Layer-Final', activation='softmax'))
-
-# compiling the model
-model.compile(loss='categorical_crossentropy', metrics=['accuracy'])
-
-# ------------------------- RESTORE WHEN DATA PROCESSING ISSUE IS FIXED --------------------------
-
-# model.summary()
-
-# building the model
-# model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=EPOCHS, verbose=VERBOSE, validation_split=VALIDATION_SPLIT)
-
-# testing the model
-# print(model.evaluate(x_test, y_test))
-
-# ------------------------------------------------------------------------------------------------
+# calculates the accuracy of the model by comparing the prediction to the recorded rank
+print('Accuracy:', str(round(accuracy_score(y_test, predictions) * 100, 2)) + '%')
