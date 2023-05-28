@@ -22,7 +22,7 @@ plt.show()
 
 # the histogram shows no linear trend for LeagueIndex, and we don't know which parameter is
 # more or less important to calculating rank, so I decided to use a DecisionTreeClassifier
-# model, which will run multiple splits and use the split with the error closest to zero.
+# model which will run multiple splits and use the split with the error closest to zero.
 
 # splits the dataframe into feature variable x, last 18 columns, and target variable y, LeagueIndex
 x = df.drop(columns=['GameID', 'LeagueIndex'])
