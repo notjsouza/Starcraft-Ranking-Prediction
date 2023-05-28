@@ -2,6 +2,6 @@
 Predicts a player's Starcraft Ranking based on their stats
 
 Necessary imports:
-pandas
-scikit-learn
+pandas, 
+scikit-learn, 
 matplotlib
