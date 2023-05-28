@@ -6,6 +6,7 @@ from sklearn.metrics import accuracy_score
 
 import matplotlib.pyplot as plt
 
+# ------------------------------- ETL ------------------------------------------------------------
 # load csv file into a pandas dataframe
 df = pd.read_csv('starcraft_player_data.csv')
 
@@ -13,21 +14,23 @@ df = pd.read_csv('starcraft_player_data.csv')
 df = df.where(df != '?').dropna()
 df.head()
 
-# creating a histogram to map player density per LeagueIndex
-plt.hist(df['LeagueIndex'])
-plt.xlabel('LeagueIndex')
-plt.ylabel('Player Density')
-plt.title('Player Density per LeagueIndex')
+# splits the dataframe into feature variable x, last 18 columns, and target variable y, LeagueIndex
+x = df.drop(columns=['GameID', 'LeagueIndex'])
+y = df['LeagueIndex']
+
+# ------------------------------- EDA ------------------------------------------------------------
+# plots a histogram of player density at each LeagueIndex
+plt.hist(y)
+plt.xlabel('League Index')
+plt.ylabel('Number of Players')
+plt.title('Number of Players per League Index')
 plt.show()
 
 # the histogram shows no linear trend for LeagueIndex, and we don't know which parameter is
 # more or less important to calculating rank, so I decided to use a DecisionTreeClassifier
 # model which will run multiple splits and use the split with the error closest to zero.
 
-# splits the dataframe into feature variable x, last 18 columns, and target variable y, LeagueIndex
-x = df.drop(columns=['GameID', 'LeagueIndex'])
-y = df['LeagueIndex']
-
+# ------------------------------- Modeling -------------------------------------------------------
 # using a 90/10 split between training data and test data to thoroughly train the model
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.1, random_state=1)
 
