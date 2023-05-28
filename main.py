@@ -20,8 +20,6 @@ plt.ylabel('Player Density')
 plt.title('Player Density per LeagueIndex')
 plt.show()
 
-# logically we knew there wouldn't be a linear trend, but I like to be certain.
-
 # the histogram shows no linear trend for LeagueIndex, and we don't know which parameter is
 # more or less important to calculating rank, so I decided to use a DecisionTreeClassifier
 # model, which will run multiple splits and use the split with the error closest to zero.
