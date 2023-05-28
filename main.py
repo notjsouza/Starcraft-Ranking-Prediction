@@ -26,8 +26,7 @@ plt.ylabel('Number of Players')
 plt.title('Number of Players per League Index')
 plt.show()
 
-# the histogram shows no linear trend for LeagueIndex, and we don't know which parameter is
-# more or less important to calculating rank, so I decided to use a DecisionTreeClassifier
+# the histogram shows no linear trend for LeagueIndex, so I decided to use a DecisionTreeClassifier
 # model which will run multiple splits and use the split with the error closest to zero.
 
 # ------------------------------- Modeling -------------------------------------------------------
